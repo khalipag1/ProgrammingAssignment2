@@ -57,7 +57,7 @@ function.
                     return(i_m)
             }
             data <- x$get()
-            m <- solve(data, ...)
+            i_m <- solve(data, ...)
             x$setInverse(i_m)
             i_m
     }
