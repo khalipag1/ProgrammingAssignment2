@@ -29,19 +29,19 @@ really a list containing a function to
 
 <!-- -->
 
-    makeCacheMatrix <- function(x =matrix(,nrow=10,ncol=10)) {
-            i_m <- NULL
-            set <- function(y) {
-                    x <<- y
-                    i_m <<- NULL
-            }
-            get <- function() x
-            setInverse <- function(solve) i_m <<- solve
-            getInverse <- function() i_m
-            list(set = set, get = get,
-                 setInverse = setInverse,
-                 getInverse = getInverse)
-    }
+makeVector <- function(x = numeric()) {
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(set = set, get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
 
 The following function calculates the mean of the special "vector"
 created with the above function. However, it first checks to see if the
@@ -49,18 +49,17 @@ mean has already been calculated. If so, it `get`s the mean from the
 cache and skips the computation. Otherwise, it calculates the mean of
 the data and sets the value of the mean in the cache via the `setmean`
 function.
-
-    cacheSolve <- function(x, ...) {
-            i_m <- x$getInverse()
-            if(!is.null(i_m)) {
-                    message("getting cached data")
-                    return(i_m)
-            }
-            data <- x$get()
-            i_m <- solve(data, ...)
-            x$setInverse(i_m)
-            i_m
-    }
+cachemean <- function(x, ...) {
+        m <- x$getmean()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- mean(data, ...)
+        x$setmean(m)
+        m
+}
 ### Assignment: Caching the Inverse of a Matrix
 
 Matrix inversion is usually a costly computation and there may be some
